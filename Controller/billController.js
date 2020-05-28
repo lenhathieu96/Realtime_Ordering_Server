@@ -1,9 +1,9 @@
-const Order = require("../Models/orderModel");
+const Bill = require("../Models/billModel");
 
 //Lấy toàn bộ Order===============================================================================
-module.exports.getOrder = () =>
+module.exports.getAllBill = () =>
   new Promise((resolve, reject) => {
-    Order.find({}, (err, order) => {
+    Bill.find({Payed:false}, (err, order) => {
       if (err) {
         reject(err);
       }
@@ -15,22 +15,25 @@ module.exports.getOrder = () =>
 module.exports.update_oneDone = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
     // console.log(order_id,"order_id")
-    Order.findOne({ ID: bill_id }, async (err, doc) => {
+    // console.log(bill_id)
+
+    //Kiếm _id theo bill ID
+    Bill.findOne({ ID: bill_id }, async (err, doc) => {
       if (err) {
         reject(err);
       }
       if (!doc) {
         reject("Not Found");
       }
-      //   console.log(doc._id, "doc");
-      const index = doc.Detail.findIndex((order) => order.id === order_id);
+      // console.log(typeof order_id);
+      const index = doc.Detail.findIndex((order) => order._id == order_id);
       if (index >= 0) {
         doc.Detail[index] = {
           ...doc.Detail[index],
           done: doc.Detail[index].done + 1,
           quantity: doc.Detail[index].quantity - 1,
         };
-        doc.markModified("Detail");
+        console.log(doc);
         doc
           .save()
           .then(() => resolve())
@@ -43,7 +46,7 @@ module.exports.update_oneDone = (bill_id, order_id) =>
 module.exports.update_allDone = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
     // console.log(order_id,"order_id")
-    Order.findOne({ ID: bill_id }, async (err, doc) => {
+    Bill.findOne({ ID: bill_id }, async (err, doc) => {
       if (err) {
         reject(err);
       }
@@ -71,7 +74,7 @@ module.exports.update_allDone = (bill_id, order_id) =>
 module.exports.update_singleFinish = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
     // console.log(order_id,"order_id")
-    Order.findOne({ ID: bill_id }, async (err, doc) => {
+    Bill.findOne({ ID: bill_id }, async (err, doc) => {
       if (err) {
         reject(err);
       }
@@ -99,7 +102,7 @@ module.exports.update_singleFinish = (bill_id, order_id) =>
 module.exports.update_allFinish = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
     // console.log(order_id,"order_id")
-    Order.findOne({ ID: bill_id }, async (err, doc) => {
+    Bill.findOne({ ID: bill_id }, (err, doc) => {
       if (err) {
         reject(err);
       }
@@ -122,3 +125,26 @@ module.exports.update_allFinish = (bill_id, order_id) =>
       }
     });
   });
+
+module.exports.createBill = (bill) =>
+  new Promise((resolve, reject) => {
+    let newBill = new Bill(bill);
+    newBill.save()
+      .then(() => resolve())
+      .catch((err) => reject(err));
+  });
+
+  module.exports.chargeBill = (bill_id) =>
+  new Promise((resolve, reject) => {
+    Bill.findOne({ ID: bill_id }, (err, doc) => {
+      if (err) {
+        reject(err);
+      }
+      if (!doc) {
+        reject("Not Found");
+      }
+      doc.Payed = true;
+      doc.save().then(()=>resolve()).catch((err)=>reject(err))
+    })
+  })
+
