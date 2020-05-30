@@ -19,7 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.13",
-    "nodemon": "^2.0.2",
+    "nodemon": "^2.0.4",
     "socket.io": "^2.3.0"
   }
 }

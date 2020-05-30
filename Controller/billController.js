@@ -14,30 +14,25 @@ module.exports.getAllBill = () =>
 //Thực hiện xong 1 món============================================================================
 module.exports.update_oneDone = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
-    // console.log(order_id,"order_id")
-    // console.log(bill_id)
-
     //Kiếm _id theo bill ID
-    Bill.findOne({ ID: bill_id }, async (err, doc) => {
+    Bill.findOne({ ID: bill_id }, (err, doc) => {
       if (err) {
         reject(err);
       }
       if (!doc) {
         reject("Not Found");
       }
-      // console.log(typeof order_id);
-      const index = doc.Detail.findIndex((order) => order._id == order_id);
+      const Orders = doc.Order
+      const index = Orders.findIndex((order) => order._id == order_id);
       if (index >= 0) {
-        doc.Detail[index] = {
-          ...doc.Detail[index],
-          done: doc.Detail[index].done + 1,
-          quantity: doc.Detail[index].quantity - 1,
-        };
-        console.log(doc);
+        Orders[index].done +=1 
+        doc.markModified("Order");
         doc
           .save()
           .then(() => resolve())
           .catch((err) => reject(err));
+      // console.log(Orders[index])
+
       }
     });
   });
@@ -54,14 +49,16 @@ module.exports.update_allDone = (bill_id, order_id) =>
         reject("Not Found");
       }
       //   console.log(doc._id, "doc");
-      const index = doc.Detail.findIndex((order) => order.id === order_id);
+      const Orders = doc.Order
+      const index = doc.Order.findIndex((order) => order.id === order_id);
       if (index >= 0) {
-        doc.Detail[index] = {
-          ...doc.Detail[index],
-          done: doc.Detail[index].quantity + doc.Detail[index].done,
-          quantity: 0,
-        };
-        doc.markModified("Detail");
+        Orders[index].done += Orders[index].quantity 
+        // doc.Order[index] = {
+        //   ...doc.Order[index],
+        //   done: doc.Order[index].quantity + doc.Order[index].done,
+        //   quantity: 0,
+        // };
+        doc.markModified("Order");
         doc
           .save()
           .then(() => resolve())
@@ -71,7 +68,7 @@ module.exports.update_allDone = (bill_id, order_id) =>
   });
 
 //Phục vụ 1 món====================================================================================
-module.exports.update_singleFinish = (bill_id, order_id) =>
+module.exports.update_oneServed = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
     // console.log(order_id,"order_id")
     Bill.findOne({ ID: bill_id }, async (err, doc) => {
@@ -82,14 +79,12 @@ module.exports.update_singleFinish = (bill_id, order_id) =>
         reject("Not Found");
       }
       //   console.log(doc._id, "doc");
-      const index = doc.Detail.findIndex((order) => order.id === order_id);
+      const Orders = doc.Order
+      const index = doc.Order.findIndex((order) => order.id === order_id);
       if (index >= 0) {
-        doc.Detail[index] = {
-          ...doc.Detail[index],
-          done: doc.Detail[index].done - 1,
-          served: doc.Detail[index].served + 1,
-        };
-        doc.markModified("Detail");
+        Orders[index].done-=1 
+        Orders[index].served +=1
+        doc.markModified("Order");
         doc
           .save()
           .then(() => resolve())
@@ -99,8 +94,9 @@ module.exports.update_singleFinish = (bill_id, order_id) =>
   });
 
 //Phục vụ tất cả món===================================================================================
-module.exports.update_allFinish = (bill_id, order_id) =>
+module.exports.update_allServed = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
+
     // console.log(order_id,"order_id")
     Bill.findOne({ ID: bill_id }, (err, doc) => {
       if (err) {
@@ -110,14 +106,13 @@ module.exports.update_allFinish = (bill_id, order_id) =>
         reject("Not Found");
       }
       //   console.log(doc._id, "doc");
-      const index = doc.Detail.findIndex((order) => order.id === order_id);
+      const Orders = doc.Order
+      const index = doc.Order.findIndex((order) => order.id === order_id);
       if (index >= 0) {
-        doc.Detail[index] = {
-          ...doc.Detail[index],
-          served: doc.Detail[index].served + doc.Detail[index].done,
-          done: 0,
-        };
-        doc.markModified("Detail");
+        Orders[index].served += Orders[index].done
+        Orders[index].done = 0 
+
+        doc.markModified("Order");
         doc
           .save()
           .then(() => resolve())

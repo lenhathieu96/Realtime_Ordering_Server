@@ -21,7 +21,7 @@ const foodSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    finish:{
+    served:{
         type:Number,
         required:true
     },
