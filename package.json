@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev":"nodemon --inspect index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "ga": "git add .",
     "gcm": "git commit -m 'upload'",
@@ -17,6 +19,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "minimist": "^1.2.5",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.13",
     "nodemon": "^2.0.4",
