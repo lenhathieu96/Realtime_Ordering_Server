@@ -10,10 +10,8 @@ const cors = require("cors");
 const authRoute = require("./Route/authRoute");
 const foodRoute = require("./Route/foodRoute");
 
-
 const port = 8000;
 const createUID = ()=>Date.now()
-
 
 app.use(cors({ origin: true }));
 app.use(bodyParser.json());
@@ -31,7 +29,6 @@ mongoose
   .catch((err) => console.log("Connect database fail",err));
 
 const SocketController = require('./SocketIO/Socket')(io)
-
 
 server.listen(port, () => {
   console.log("Server is running on port " + port);
