@@ -8,8 +8,8 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "ga": "git add .",
-    "gcm": "git commit -m 'upload'",
-    "gpu": "git push"
+    "gcm": "git commit -m 'update'",
+    "gpu": "git push SSR_Server"
   },
   "author": "",
   "license": "ISC",
