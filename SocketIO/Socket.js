@@ -1,6 +1,6 @@
 const billController = require("../Controller/billController");
 
-
+const createUID = ()=>Date.now()
 module.exports = function(io){
     io.on("connect", (socket) => {
         console.log("user has connected");
@@ -85,6 +85,7 @@ module.exports = function(io){
         });
       
         socket.on("createBill",(bill)=>{
+          console.log(bill);
           bill.ID = "BI"+createUID()
           bill.Created = Date.now()
           bill.Payed = false

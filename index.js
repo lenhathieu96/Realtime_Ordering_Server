@@ -11,7 +11,7 @@ const authRoute = require("./Route/authRoute");
 const foodRoute = require("./Route/foodRoute");
 
 const port = process.env.PORT||8000;
-const createUID = ()=>Date.now()
+
 
 app.use(cors({ origin: true }));
 app.use(bodyParser.json());
