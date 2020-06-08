@@ -85,7 +85,7 @@ module.exports = function(io){
         });
       
         socket.on("createBill",(bill)=>{
-          console.log(bill);
+          // console.log(bill);
           bill.ID = "BI"+createUID()
           bill.Created = Date.now()
           bill.Payed = false
@@ -99,6 +99,20 @@ module.exports = function(io){
           .catch((err)=>{
             console.log(err)
             socket.emit('createBillResult',false)
+          })
+        })
+
+        socket.on('updateBill',(bill_id,updated_orders)=>{
+          billController.updateBill(bill_id,updated_orders).then(()=>{
+            billController.getAllBill().then((allBill)=>{
+              socket.emit('updateBillResult',true)
+              socket.emit("allBillResult",allBill)
+              socket.broadcast.emit("allBillResult",allBill)
+            })
+          })
+          .catch((err)=>{
+            console.log(err)
+            socket.emit('updateBillResult',false)
           })
         })
       
@@ -115,6 +129,5 @@ module.exports = function(io){
             socket.emit('createBillResult',false)
           })
         })
-      
       });
 } 

@@ -45,7 +45,7 @@ const billSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    Order:[foodSchema],
+    Orders:[foodSchema],
     TotalPrice:{
         type:Number,
         required:true

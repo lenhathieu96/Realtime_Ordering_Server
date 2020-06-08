@@ -22,11 +22,11 @@ module.exports.update_oneDone = (bill_id, order_id) =>
       if (!doc) {
         reject("Not Found");
       }
-      const Orders = doc.Order
+      const Orders = doc.Orders
       const index = Orders.findIndex((order) => order._id == order_id);
       if (index >= 0) {
         Orders[index].done +=1 
-        doc.markModified("Order");
+        doc.markModified("Orders");
         doc
           .save()
           .then(() => resolve())
@@ -49,16 +49,11 @@ module.exports.update_allDone = (bill_id, order_id) =>
         reject("Not Found");
       }
       //   console.log(doc._id, "doc");
-      const Orders = doc.Order
-      const index = doc.Order.findIndex((order) => order.id === order_id);
+      const Orders = doc.Orders
+      const index = doc.Orders.findIndex((order) => order.id === order_id);
       if (index >= 0) {
         Orders[index].done += Orders[index].quantity 
-        // doc.Order[index] = {
-        //   ...doc.Order[index],
-        //   done: doc.Order[index].quantity + doc.Order[index].done,
-        //   quantity: 0,
-        // };
-        doc.markModified("Order");
+        doc.markModified("Orders");
         doc
           .save()
           .then(() => resolve())
@@ -70,7 +65,6 @@ module.exports.update_allDone = (bill_id, order_id) =>
 //Phục vụ 1 món====================================================================================
 module.exports.update_oneServed = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
-    // console.log(order_id,"order_id")
     Bill.findOne({ ID: bill_id }, async (err, doc) => {
       if (err) {
         reject(err);
@@ -78,13 +72,12 @@ module.exports.update_oneServed = (bill_id, order_id) =>
       if (!doc) {
         reject("Not Found");
       }
-      //   console.log(doc._id, "doc");
-      const Orders = doc.Order
-      const index = doc.Order.findIndex((order) => order.id === order_id);
+      const Orders = doc.Orders
+      const index = doc.Orders.findIndex((order) => order.id === order_id);
       if (index >= 0) {
         Orders[index].done-=1 
         Orders[index].served +=1
-        doc.markModified("Order");
+        doc.markModified("Orders");
         doc
           .save()
           .then(() => resolve())
@@ -96,8 +89,6 @@ module.exports.update_oneServed = (bill_id, order_id) =>
 //Phục vụ tất cả món===================================================================================
 module.exports.update_allServed = (bill_id, order_id) =>
   new Promise((resolve, reject) => {
-
-    // console.log(order_id,"order_id")
     Bill.findOne({ ID: bill_id }, (err, doc) => {
       if (err) {
         reject(err);
@@ -106,13 +97,13 @@ module.exports.update_allServed = (bill_id, order_id) =>
         reject("Not Found");
       }
       //   console.log(doc._id, "doc");
-      const Orders = doc.Order
-      const index = doc.Order.findIndex((order) => order.id === order_id);
+      const Orders = doc.Orders
+      const index = doc.Orders.findIndex((order) => order.id === order_id);
       if (index >= 0) {
         Orders[index].served += Orders[index].done
         Orders[index].done = 0 
 
-        doc.markModified("Order");
+        doc.markModified("Orders");
         doc
           .save()
           .then(() => resolve())
@@ -128,6 +119,22 @@ module.exports.createBill = (bill) =>
       .then(() => resolve())
       .catch((err) => reject(err));
   });
+
+  module.exports.updateBill = (bill_id,updated_orders)=>
+    new Promise((resolve,reject)=>{
+  console.log(updated_orders);
+      Bill.findOne({ ID: bill_id},(err,doc)=>{
+        if(err){
+          reject(err)
+        }
+        if(!doc){
+          reject('Not Found')
+        }
+        doc.Orders=updated_orders;
+        doc.save().then(()=>resolve())
+        .catch((err)=>reject(err))
+      })
+    })
 
   module.exports.chargeBill = (bill_id) =>
   new Promise((resolve, reject) => {
