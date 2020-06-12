@@ -8,6 +8,10 @@ const foodSchema = new mongoose.Schema({
     price:{
         type:Number,
         required:true
+    },
+    enable:{
+        type:Boolean,
+        required:true
     }
 })
 
