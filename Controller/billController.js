@@ -122,7 +122,7 @@ module.exports.createBill = (bill) =>
 
   module.exports.updateBill = (bill_id,updated_orders)=>
     new Promise((resolve,reject)=>{
-  console.log(updated_orders);
+  // console.log(updated_orders);
       Bill.findOne({ ID: bill_id},(err,doc)=>{
         if(err){
           reject(err)
@@ -149,4 +149,28 @@ module.exports.createBill = (bill) =>
       doc.save().then(()=>resolve()).catch((err)=>reject(err))
     })
   })
+
+  module.exports.deleteBill = (bill_id) =>
+  new Promise((resolve, reject) => {
+    // console.log(bill_id);
+    Bill.findByIdAndRemove(bill_id)
+      .then(()=>resolve())
+      .catch((err)=>reject(err))
+  })
+
+  module.exports.switchTable = (bill_id,chosenTable)=>
+    new Promise((resolve,reject)=>{
+  // console.log(updated_orders);
+      Bill.findOne({ ID: bill_id},(err,doc)=>{
+        if(err){
+          reject(err)
+        }
+        if(!doc){
+          reject('Not Found')
+        }
+        doc.Table=chosenTable;
+        doc.save().then(()=>resolve())
+        .catch((err)=>reject(err))
+      })
+    })
 

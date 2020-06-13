@@ -48,7 +48,7 @@ module.exports.updateFood = async  (req,res)=>{
     }
 }
 
-module.exports.deleteFood = async (req,res)=>{
+module.exports.deleteFood = (req,res)=>{
     Food.findOneAndRemove(req.body.id)
     .then(()=>{res.status(200).json({status:200})})
     .catch((err)=>{
