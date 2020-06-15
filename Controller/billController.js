@@ -75,7 +75,6 @@ module.exports.update_oneServed = (bill_id, order_id) =>
       const Orders = doc.Orders
       const index = doc.Orders.findIndex((order) => order.id === order_id);
       if (index >= 0) {
-        Orders[index].done-=1 
         Orders[index].served +=1
         doc.markModified("Orders");
         doc
@@ -101,8 +100,6 @@ module.exports.update_allServed = (bill_id, order_id) =>
       const index = doc.Orders.findIndex((order) => order.id === order_id);
       if (index >= 0) {
         Orders[index].served += Orders[index].done
-        Orders[index].done = 0 
-
         doc.markModified("Orders");
         doc
           .save()

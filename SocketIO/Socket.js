@@ -23,8 +23,7 @@ module.exports = function(io){
         .then(() => {
           billController
           .getAllBill()
-          .then((order) => {
-            console.log(order)
+          .then((order) => {  
             socket.emit("allBillResult", order);
             socket.broadcast.emit("allBillResult",order)
           })
