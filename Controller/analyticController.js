@@ -3,7 +3,6 @@ const Bill = require('../Models/billModel')
 module.exports.getWeekRevenue = async (req,res) => {
     let today = new Date(Date.now()).getDate()
     let revenue = []
-   
     await Bill.find({},(err,bill)=>{
         if(err){
             console.log(err)
@@ -16,8 +15,9 @@ module.exports.getWeekRevenue = async (req,res) => {
                 day: i===0?"Hôm Nay":i===1?"Hôm Qua":"Ngày "+(today-i),
                 revenue: revenuebyDay})
         }
+        res.status(200).json(revenue)
     })
-    res.send(revenue)   
+      
 }
 
 module.exports.getRevenueByMonth = (req,res) => {
