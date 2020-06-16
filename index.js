@@ -9,6 +9,7 @@ const cors = require("cors");
 
 const authRoute = require("./Route/authRoute");
 const foodRoute = require("./Route/foodRoute");
+const analyticRoute = require("./Route/analyticRoute")
 
 const port = process.env.PORT||8000;
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 app.use("/", authRoute);
 app.use("/food",foodRoute)
+app.use("/analytic", analyticRoute);
 
 mongoose
   .connect(process.env.MONGODB_URI, {
