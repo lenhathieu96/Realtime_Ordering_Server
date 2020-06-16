@@ -13,7 +13,7 @@ module.exports.getWeekRevenue = async (req,res) => {
             const filterbyDay = bill.filter(item=>new Date(item.Created).getDate()===today-i)
             const revenuebyDay = filterbyDay.reduce((revenue,eachBill)=>revenue+=eachBill.TotalPrice,0)
             revenue.push({
-                day: today-i,
+                day: i===0?"Hôm Nay":i===1?"Hôm Qua":"Ngày "+(today-i),
                 revenue: revenuebyDay})
         }
     })
