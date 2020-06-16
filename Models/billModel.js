@@ -28,6 +28,9 @@ const foodSchema = new mongoose.Schema({
     totalPrice:{
         type:Number,
         required:true
+    },
+    note:{
+        type:String,
     }
 
 })
