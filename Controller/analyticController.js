@@ -3,7 +3,7 @@ const Bill = require('../Models/billModel')
 module.exports.getWeekRevenue = async (req,res) => {
     let today = new Date(Date.now()).getDate()
     let revenue = []
-    await Bill.find({},(err,bill)=>{
+    await Bill.find({Payed:true},(err,bill)=>{
         if(err){
             console.log(err)
             res.status(400).json({err})
