@@ -17,7 +17,7 @@ const port = process.env.PORT||8000;
 app.use(cors({ origin: true }));
 app.use(bodyParser.json());
 
-app.use("/", authRoute);
+app.use("/auth", authRoute);
 app.use("/food",foodRoute)
 app.use("/analytic", analyticRoute);
 

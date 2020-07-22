@@ -6,15 +6,16 @@ const {createToken, createRefreshToken} = require('./Token')
 
 module.exports.Login = (req, res) => {
   console.log(req.body);
+  const params = req.body.params
   try {
-    User.findOne({ name: req.body.name }, async (err, user) => {
+    User.findOne({ name: params.username }, async (err, user) => {
       if (err) throw new err();
       if (!user) {
         return res
           .status(400)
           .json({ message: "authenthication failed !, user not found" });
       }
-      if(user.password!==req.body.password){
+      if(user.password!==params.password){
         return res
         .status(400)
         .json({ message: "authenthication failed !, wrong password" });
@@ -24,7 +25,9 @@ module.exports.Login = (req, res) => {
 
         return res
         .status(200)
-        .json({ message: "authenthication sucess", accessToken,  refreshToken });
+        .json({ message: "authenthication sucess", data:{
+          accessToken,refreshToken
+        } });
       }
     });
   } catch (err) {
