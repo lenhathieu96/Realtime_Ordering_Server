@@ -2,8 +2,8 @@ const express = require('express')
 const router = express.Router()
 
 const foodController = require('../Controller/foodController')
-
-router.get('/',foodController.getAllFood)
+const authController = require('../Controller/authController')
+router.get('/', authController.Authorization, foodController.getAllFood)
 router.post('/addFood',foodController.addNewFood)
 router.post('/updateFood',foodController.updateFood)
 router.post('/deleteFood',foodController.deleteFood)
