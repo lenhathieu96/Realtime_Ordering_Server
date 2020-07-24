@@ -4,7 +4,7 @@ const User = require("../Models/userModel");
 const secretKey = require('../Key')
 const {createToken, createRefreshToken} = require('./Token')
 
-module.exports.Login = (req, res, next) => {
+module.exports.Login = (req, res) => {
     const params = req.body.params
     User.findOne({ name: params.username }, async (err, user) => {
       if (err) throw new err();
