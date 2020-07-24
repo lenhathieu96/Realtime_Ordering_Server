@@ -7,5 +7,5 @@ router.get('/',(req,res)=>{
     res.send('hello to my server')
 })
 router.post('/',authController.Login)
-
+router.post('/token', authController.refreshToken)
 module.exports = router
