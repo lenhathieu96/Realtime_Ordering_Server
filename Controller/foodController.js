@@ -11,14 +11,16 @@ module.exports.getAllFood = (req,res)=>{
 }
 
 module.exports.addNewFood = (req,res)=>{
-    if(req.body.name!==""&& req.body.price!==""){
-        req.body.enable = true
-        let newFood = new Food(req.body)
+    let clientFood = req.body.params
+    if(clientFood.name!==""&& clientFood.price!==""){
+        clientFood.enable = true
+        let newFood = new Food(clientFood)
         Food.find({},(err,foodlist)=>{
             const duplicateFood =  foodlist.find(item=>item.name === newFood.name)
             if(!duplicateFood){
                newFood.save()
                 .then(()=>{
+                    console.log('Thêm Thành Công')
                     res.status(200).json({status:200})
                 })
                 .catch((err)=>{
@@ -35,12 +37,16 @@ module.exports.addNewFood = (req,res)=>{
 }
 
 module.exports.updateFood = async  (req,res)=>{
-   const food =  await Food.findOne({_id:req.body.id})
+    const clientFood = req.body.params
+   const food =  await Food.findOne({_id:clientFood.id})
     if(food){
-        food.name = req.body.food.name;
-        food.price = req.body.food.price;
+        food.name = clientFood.food.name;
+        food.price = clientFood.food.price;
         food.save()
-        .then(()=>{res.status(200).json({status:200})})
+        .then(()=>{
+            console.log('update thành công')
+            res.status(200).json({status:200})
+        })
         .catch((err)=>{
             console.log(err)
             res.status(400).send("Lỗi Sửa Món")
@@ -49,8 +55,13 @@ module.exports.updateFood = async  (req,res)=>{
 }
 
 module.exports.deleteFood = (req,res)=>{
-    Food.findOneAndRemove(req.body.id)
-    .then(()=>{res.status(200).json({status:200})})
+    const clientFood = req.body.params
+    console.log(clientFood)
+    Food.findByIdAndDelete(clientFood)
+    .then(()=>{
+        console.log('xoá thành công')
+        res.status(200).json({status:200})
+    })
     .catch((err)=>{
         console.log(err)
         res.status(400).send("Lỗi Xoá Món")

@@ -9,7 +9,7 @@ module.exports.createToken = (userID) => {
         },
         secretKey.Key,
         {
-            expiresIn:'2m'
+            expiresIn:'30s'
         }
     )
     return token;

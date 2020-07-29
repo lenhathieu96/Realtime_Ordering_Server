@@ -7,7 +7,9 @@ const {createToken, createRefreshToken} = require('./Token')
 module.exports.Login = (req, res) => {
     const params = req.body.params
     User.findOne({ name: params.username }, async (err, user) => {
-      if (err) throw new err();
+      if (err){
+        return res.status(400).send(err)
+      };
       if (!user) {
         return res
           .status(400)
@@ -20,7 +22,7 @@ module.exports.Login = (req, res) => {
       }else{
         const accessToken = createToken(user._id)
         const refreshToken = createRefreshToken(user)
-
+        console.log("login sucess")
         return res
         .status(200)
         .json({ message: "authenthication sucess", data:{
@@ -36,8 +38,10 @@ module.exports.Authorization = (req, res, next)=>{
     let token = bearerToken.slice(7, bearerToken.length).trimLeft();
     jwt.verify(token,secretKey.Key,(err,payload)=>{
       if(err){
-        return res.status(401).send('Invalid Token')
+        console.log('invalid token')
+        return res.status(401).send('Invalid  access Token')
       }else{
+        console.log('valid access token')
         next()
       }
     })
@@ -60,9 +64,11 @@ module.exports.refreshToken = (req,res)=>{
          let refreshKey = secretKey.refreshKey + user.password
          jwt.verify(refreshToken, refreshKey,(err,payload)=>{
              if(err){
+              console.log('invalid refresh Token')
               res.status(401).send('invalid token')
              }else{
                const New_AccessToken = createToken(user)
+               console.log('new Access Token created')
                res.status(200).json({accessToken: New_AccessToken})
              }    
          })
