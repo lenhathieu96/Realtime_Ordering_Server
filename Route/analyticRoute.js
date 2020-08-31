@@ -4,9 +4,7 @@ const router = express.Router()
 const analyticController = require('../Controller/analyticController')
 const authController = require('../Controller/authController')
 
-router.get('/weekRevenue',analyticController.getWeekRevenue)
-router.get('/revenueByMonth',analyticController.getRevenueByMonth)
-
-
+router.get('/weeklyRevenue',authController.Authorization, analyticController.getWeeklyRevenue)
+router.get('/monthlyRevenue',authController.Authorization, analyticController.getMonthlyRevenue)
 
 module.exports = router

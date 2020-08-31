@@ -1,6 +1,6 @@
 const Bill = require('../Models/billModel')
 
-module.exports.getWeekRevenue = async (req,res) => {
+module.exports.getWeeklyRevenue = async (req,res) => {
     let today = new Date(Date.now()).getDate()
     let revenue = []
     await Bill.find({Payed:true},(err,bill)=>{
@@ -24,7 +24,7 @@ module.exports.getWeekRevenue = async (req,res) => {
       
 }
 
-module.exports.getRevenueByMonth = async (req,res) => {
+module.exports.getMonthlyRevenue = async (req,res) => {
     let month = new Date(Date.now()).getMonth()
     await Bill.find({},(err,bill)=>{
         if(err){
