@@ -24,8 +24,10 @@ module.exports.update_oneDone = (bill_id, order_id) =>
       }
       const Orders = doc.Orders
       const index = Orders.findIndex((order) => order._id == order_id);
+      //check exists of order
       if (index >= 0) {
-        Orders[index].done +=1 
+        let order = Orders[index]
+        order.done < order.quantity ? order.done +=1 : order.done = order.quantity 
         doc.markModified("Orders");
         doc
           .save()
@@ -48,7 +50,6 @@ module.exports.update_allDone = (bill_id, order_id) =>
       if (!doc) {
         reject("Not Found");
       }
-      //   console.log(doc._id, "doc");
       const Orders = doc.Orders
       const index = doc.Orders.findIndex((order) => order.id === order_id);
       if (index >= 0) {
@@ -75,7 +76,9 @@ module.exports.update_oneServed = (bill_id, order_id) =>
       const Orders = doc.Orders
       const index = doc.Orders.findIndex((order) => order.id === order_id);
       if (index >= 0) {
-        Orders[index].served +=1
+        let order = Orders[index]
+        //'served' is not higher than 'quantity' 
+        order.served < order.done ? order.served +=1 : order.served = order.done
         doc.markModified("Orders");
         doc
           .save()
