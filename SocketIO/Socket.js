@@ -5,7 +5,7 @@ module.exports = function (io) {
   io.on("connect", (socket) => {
     console.log("user has connected");
 
-    socket.on("test", (params) => {
+    socket.on("receiveDataPos", (params) => {
       console.log(params);
     });
     //Lấy toàn bộ order===========================================================================
