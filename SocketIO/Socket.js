@@ -6,7 +6,7 @@ module.exports = function (io) {
     console.log("user has connected");
 
     socket.on("receiveDataPos", (params) => {
-      console.log(params);
+      console.log(params, "params");
     });
     //Lấy toàn bộ order===========================================================================
     socket.on("allBill", () => {
